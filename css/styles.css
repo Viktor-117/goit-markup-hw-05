@@ -8,6 +8,7 @@
   --hero-bg-color: #2f303a;
   --primary-font-weight: 500;
   --primary-font-size: 14px;
+  --transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
 }
 .body {
   color: var(--primary-text-color);
@@ -56,6 +57,7 @@ h1, h2, h3 {
   display: flex;
   margin-left: 93px;
 }
+
 .nav-item {
   font-weight: var(--primary-font-weight);
   font-size: var(--primary-font-size);
@@ -64,9 +66,11 @@ h1, h2, h3 {
   letter-spacing: 0.02em;
   position: relative;
 }
+
 .nav-item:not(:last-child) {
   margin-right: 50px;
 }
+
 .header-list {
   display: flex;
   margin-left: auto;
@@ -98,18 +102,16 @@ h1, h2, h3 {
 
 .link.link-current {
   color: var(--accent-color);
+  padding-bottom: 0;
 }
 
 .link.link-current::after {
   content: '';
-  display: inline-block;
-  position: absolute;
+  display: block;
   width: 100%;
   height: 4px;
   border-radius: 2px;
   background-color: var(--accent-color);
-  right: 0;
-  bottom: 0;
   margin-top: 28px;
 }
 
@@ -131,6 +133,11 @@ h1, h2, h3 {
   color: var(--primary-text-color);
   line-height: 1.4;
   letter-spacing: 0.03em;
+}
+
+.nav-item .link,
+.header-item .link {
+  transition: color 250ms var(--transition-timing);
 }
 
 .logo {
@@ -376,6 +383,7 @@ background-position: center;
   justify-content: center;
   align-items: center;
   fill: #AFB1B8;
+  transition: background-color 250ms var(--transition-timing), fill 250ms var(--transition-timing);
 }
 
 .team-soc-item + .team-soc-item {
@@ -421,6 +429,7 @@ background-position: center;
   justify-content: center;
   align-items: center;
   fill: #AFB1B8;
+  transition: fill 250ms var(--transition-timing), border 250ms var(--transition-timing);
 }
 
 .clients-link:hover {
@@ -492,6 +501,7 @@ background-position: center;
   justify-content: center;
   align-items: center;
   fill: var(--white-bg-color);
+  transition: background-color 250ms var(--transition-timing);
 }
 
 .join-item+.join-item {
@@ -524,6 +534,7 @@ background-position: center;
   border-radius: 4px;
   cursor: pointer;
   padding: 6px 22px;
+  transition: box-shadow 250ms var(--transition-timing), background-color 250ms var(--transition-timing), color 250ms var(--transition-timing);
 }
 
 .btn-item:not(:last-child) {
@@ -537,11 +548,6 @@ background-position: center;
   box-shadow: 0px 3px 1px rgba(0, 0, 0, 0.1),
   0px 1px 2px rgba(0, 0, 0, 0.08),
   0px 2px 2px rgba(0, 0, 0, 0.12);
-  transition: 250ms;
-  transition-timing-function: cubic-bezier(0.4,
-    0,
-    0.2,
-    1);
 }
 
 .active-btn {
@@ -575,21 +581,17 @@ background-position: center;
   flex-wrap: wrap;
 }
 .portfolio-item {
-  flex-basis: calc(100%-60px) / 3;
+  width: calc((100% - 60px) / 3);
   margin-right: 30px;
   margin-bottom: 30px;
+  transition: box-shadow 250ms var(--transition-timing);
+  cursor: pointer;
 }
 
 .portfolio-item:hover {
   box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.12),
   0px 4px 4px rgba(0, 0, 0, 0.06),
   1px 4px 6px rgba(0, 0, 0, 0.16);
-  cursor: pointer;
-  transition: 250ms;
-  transition-timing-function: cubic-bezier(0.4,
-    0,
-    0.2,
-    1);
 }
 
 .portfolio-item:nth-child(3n) {
@@ -620,6 +622,7 @@ background-position: center;
   padding-left: 24px;
   border: 1px solid #eeeeee;
   border-top: 0;
+  max-width: 370px;
 }
 
 .portfolio-thumb {
@@ -631,11 +634,11 @@ background-position: center;
   position: absolute;
   display: flex;
   align-items: center;
-  top: 100%;
+  top: 0;
   left: 0;
+  transform: translateY(100%);
   width: 100%;
   height: 100%;
-  /* pointer-events: none; */
   margin: 0;
   font-weight: 400;
   font-size: 18px;
@@ -644,10 +647,61 @@ background-position: center;
   color: var(--white-bg-color);
   background-color: rgba(33, 150, 243, 0.9);
   padding: 0 24px;
-  transition: 250ms;
+  transition: transform 250ms var(--transition-timing);
 }
 
 .portfolio-item:hover .portfolio-thumb-text {
+  transform: translate(0);
+}
+
+/* --------- MODAL --------- */
+
+.backdrop {
+  position: fixed;
   top: 0;
-  /* pointer-events: all; */
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  transition: opacity 250ms var(--transition-timing), visibility 250ms var(--transition-timing);
+}
+
+.backdrop.is-hidden .modal {
+  transform: scale(0.4) translate(-100%, -100%);
+}
+
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  width: 528px;
+  min-height: 581px;
+  background-color: var(--white-bg-color);
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12),
+  0px 1px 1px rgba(0, 0, 0, 0.14),
+  0px 2px 1px rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  transition: transform 250ms var(--transition-timing);
+}
+
+.modal-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
 }
