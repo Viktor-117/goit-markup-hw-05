@@ -432,7 +432,8 @@ background-position: center;
   transition: fill 250ms var(--transition-timing), border 250ms var(--transition-timing);
 }
 
-.clients-link:hover {
+.clients-link:hover,
+.clients-link:focus {
   border: 1px solid #2196F3;
   fill: var(--accent-color);
 }
